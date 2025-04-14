@@ -26,7 +26,7 @@ def lista_pecas(dados,grupo,codigo):
             "Pes.Bruto2": linha[20],
             "Pes.Bruto3": linha[21],
             "MediaArredondada": linha[22],
-            "media_kanban1": (linha[22] or 0) * (linha[4] or 0),
+            "media_peca": (linha[22] or 0) * (linha[4] or 0),
             
         }
         grupos = grupo

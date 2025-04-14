@@ -1,1 +1,1 @@
-print(media_materia_prima1[["somaDasSomas","grupo_concatenado"]])
+media 

@@ -2,15 +2,15 @@ import pandas as pd
 import sqlite3
 import os
 
-from media_kanban.funcoes import lista_materia_prima,lista_pecas
+from media.funcoes import lista_materia_prima,lista_pecas
 
 
 def media_pecas(grupo,codigo):
 
-  estrutura_pd1 = pd.read_excel('purchasingreport\Estrutura_Produtos_02_04_2025.xls')
-  estrutura_pd2 = pd.read_excel('purchasingreport\Estrutura_Produtos_02_04_20252.xls')
+  estrutura_pd1 = pd.read_excel('carteira\Estrutura_Produtos_02_04_2025.xls')
+  estrutura_pd2 = pd.read_excel('carteira\Estrutura_Produtos_02_04_20252.xls')
 
-  media_kanban_df = pd.read_excel('media_kanban\Média Kanban Key.xlsx')
+  media_kanban_df = pd.read_excel('media/Média Kanban Key.xlsx')
 
   conn = sqlite3.connect('banco.db')
   cursor = conn.cursor()
@@ -92,10 +92,10 @@ def media_pecas(grupo,codigo):
 
 def media_materia_prima(grupo,codigo):
 
-  estrutura_pd1 = pd.read_excel('purchasingreport\Estrutura_Produtos_02_04_2025.xls')
-  estrutura_pd2 = pd.read_excel('purchasingreport\Estrutura_Produtos_02_04_20252.xls')
+  estrutura_pd1 = pd.read_excel('carteira/Estrutura_Produtos_02_04_2025.xls')
+  estrutura_pd2 = pd.read_excel('carteira/Estrutura_Produtos_02_04_20252.xls')
 
-  media_kanban_df = pd.read_excel('media_kanban\Média Kanban Key.xlsx')
+  media_kanban_df = pd.read_excel('media/Média Kanban Key.xlsx')
 
   conn = sqlite3.connect('banco.db')
   cursor = conn.cursor()
@@ -157,7 +157,7 @@ def media_materia_prima(grupo,codigo):
   
   df_resultado = pd.DataFrame(lista_materia_prima(dados,grupo,codigo))
 
-  df_resultado["somaDasSomas"] = df_resultado[["media_kanban1","media_kanban2","media_kanban3"]].sum(axis=1)
+  df_resultado["mediaMateriaPrima"] = df_resultado[["media_kanban1","media_kanban2","media_kanban3"]].sum(axis=1)
   df_resultado["grupo_concatenado"] = df_resultado["GrupoN1"].astype(str) + df_resultado["CodigoN1"].astype(str)
 
   df_resultado["concatenado"] = df_resultado["Produto"].astype(str) + df_resultado["GrupoN1"].astype(str) + df_resultado["CodigoN1"].astype(str) + df_resultado["GrupoN2"].astype(str) + df_resultado["CodigoN2"].astype(str) + df_resultado["GrupoN3"].astype(str) + df_resultado["CodigoN3"].astype(str) + df_resultado["GrupoN4"].astype(str) + df_resultado["CodigoN4"].astype(str)
