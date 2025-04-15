@@ -1,1 +1,1 @@
-dg.drop_duplicates(subset=[concatenar.map(de)], inplace=True)
+listagem = listagem[listagem["codigo"].astype(str).str.strip() != ""]

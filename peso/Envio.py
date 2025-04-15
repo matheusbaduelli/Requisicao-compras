@@ -1,7 +1,7 @@
 import pandas as pd
 import math
 
-def calcular_peso_bruto():
+def calcular_peso_bruto(grupo,codigo):
 
     # Ler a planilha
     planilha1 = pd.read_excel('peso\Estrutura_Produtos_02_04_2025.xls',usecols="A:AL")
@@ -19,7 +19,8 @@ def calcular_peso_bruto():
     for col in colunas_peso:
         planilhaConcatenada[col] = planilhaConcatenada[col].astype(str).str.replace(",", ".").astype(float)
     
-   
+    grupos = grupo
+    codigos = codigo
         
     lista2 = []
     # Loop sobre as colunas
@@ -69,8 +70,7 @@ def calcular_peso_bruto():
         
         # Verificar os grupos
         # grupos = [1, 2, 3, 4, 5, 6, 7, 13]
-        grupos = [5]
-        codigos = [1373]
+
         if GrupoN1 in grupos or GrupoN2 in grupos or GrupoN3 in grupos or GrupoN4 in grupos:
             if CódigoN1 in codigos or CódigoN2 in codigos or CódigoN3 in codigos or CódigoN4 in codigos:
 
