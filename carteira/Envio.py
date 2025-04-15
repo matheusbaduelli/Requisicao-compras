@@ -3,7 +3,7 @@ import pandas as pd
 
 def calcular_peso_bruto():
     planilha1 = pd.read_excel('carteira\Estrutura_Produtos_02_04_2025.xls',usecols="A:AL")
-    planilha2 = pd.read_excel('carteira\Estrutura_Produtos_02_04_2025.xls',usecols="A:AL")
+    planilha2 = pd.read_excel('carteira\Estrutura_Produtos_02_04_20252.xls',usecols="A:AL")
     lista_pedidos = pd.read_excel('carteira\Lista de pedidos.xlsx')
 
     planilhaConcatenada = pd.concat([planilha1,planilha2],ignore_index=False)
@@ -22,6 +22,7 @@ def calcular_peso_bruto():
         "Grupo": planilha["Grupo N1"],
         "Código": planilha["Código N1"],
         "Qtde": planilha["Qtde"],
+        "Pes.Bruto":planilha["Pes.Bruto"]
     }
 
     lista2 = {
@@ -31,6 +32,7 @@ def calcular_peso_bruto():
         "Grupo": planilha["Grupo N2"],
         "Código": planilha["Código N2"],
         "Qtde": planilha["Qtde.1"],
+        "Pes.Bruto":planilha["Pes.Bruto.1"]
     }
     lista3 = {
         "Código do Produto": planilha["Código do Produto"],
@@ -39,6 +41,7 @@ def calcular_peso_bruto():
         "Grupo": planilha["Grupo N3"],
         "Código": planilha["Código N3"],
         "Qtde": planilha["Qtde.2"],
+        "Pes.Bruto":planilha["Pes.Bruto.2"]
     }
     lista4 = {
         "Código do Produto": planilha["Código do Produto"],
@@ -47,6 +50,7 @@ def calcular_peso_bruto():
         "Grupo": planilha["Grupo N4"],
         "Código": planilha["Código N4"],
         "Qtde": planilha["Qtde.3"],
+        "Pes.Bruto":planilha["Pes.Bruto.3"]
     }
 
     
@@ -60,15 +64,30 @@ def calcular_peso_bruto():
     planilha_pedidos = pd.merge(lista_pedidos[["Pedido", "Qtd","Codigo"]],resultado, left_on="Codigo", right_on="Código do Produto", how="left")
 
     planilha_pedidos["qtdXQtde"] = planilha_pedidos["Qtd"] * planilha_pedidos["Qtde"]
+    planilha_pedidos["pesoXQtde"] = planilha_pedidos["Pes.Bruto"] * planilha_pedidos["Qtd"]
 
-    planilha_pedidos.drop_duplicates(subset=["Pedido","Código do Produto","Grupo","Código"], inplace=True)
+    planilha_pedidos.drop_duplicates(subset=["Código do Produto","Grupo","Código","Pedido"], inplace=True)
 
-    planilha_pedidos["soma"] = planilha_pedidos.groupby(["Grupo","Código"])["qtdXQtde"].transform("sum")
+    planilha_pedidos["somaComponente"] = planilha_pedidos.groupby(["Grupo","Código"])["qtdXQtde"].transform("sum")
+    planilha_pedidos["somaPeso"] = planilha_pedidos.groupby(["Grupo","Código"])["pesoXQtde"].transform("sum")
+
+    planilha_pedidos = planilha_pedidos[planilha_pedidos["Descrição N1"].notna()]
+    planilha_pedidos = planilha_pedidos[planilha_pedidos["Descrição N1"].astype(str).str.strip() != ""]
+
+
+    planilha_pedidos["grupoConcatenado"] = (
+    planilha_pedidos["Grupo"].apply(lambda x: str(int(x)) if pd.notna(x) else "") +
+    planilha_pedidos["Código"].apply(lambda x: str(int(x)) if pd.notna(x) else "")
+)
+
+
 
     planilha_pedidos.to_excel("carteira/resultado123.xlsx", index=False)
+
+    
 
     return planilha_pedidos
 
 
 
-
+calcular_peso_bruto()
