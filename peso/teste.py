@@ -4,14 +4,14 @@ from Envio import calcular_peso_bruto
 
 import os
 # Chamar a função para calcular o peso bruto
-calcular_peso_bruto()
+
 # Carregar o arquivo Excel
-planilha1 = pd.read_excel('resultado123.xlsx')
+# planilha1 = pd.read_excel('resultado123.xlsx')
 
 
 # Criar conexão com o banco de dados
-lista_tecnica = planilha1
-lista_pedidos = pd.read_excel('Lista de pedidos.xlsx')
+lista_tecnica = calcular_peso_bruto()
+lista_pedidos = pd.read_excel('peso\Lista de pedidos.xlsx')
 
 
 # Criar conexão com o banco de dados
@@ -38,9 +38,9 @@ for linha in cursor.fetchall():
 # Criar DataFrame com os resultados
 df =  pd.DataFrame(nova_lista)
 # Exportar o DataFrame para um arquivo Excel
-df.to_excel("resultado.xlsx",index=False)
+df.to_excel("peso/resultado.xlsx",index=False)
 
-os.startfile("resultado.xlsx")
+# os.startfile("peso/resultado.xlsx")
 
 conn.commit()
 conn.close()
