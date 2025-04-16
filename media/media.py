@@ -79,12 +79,12 @@ def media_pecas(grupo,codigo):
   
   de_resultado = de_resultado.drop_duplicates(subset='concatenado')
 
-  # try:
-  #     de_resultado.to_excel('media_kanban\dadospeca.xlsx', index=False)
+  try:
+      de_resultado.to_excel('media\dadospeca.xlsx', index=False)
       
-  #     print("Arquivo Excel gerado com sucesso!")
-  # except Exception as e:
-  #     print(f"Erro ao executar consulta: {e}")
+      print("Arquivo Excel gerado com sucesso!")
+  except Exception as e:
+      print(f"Erro ao executar consulta: {e}")
       
   # os.startfile("dados.xlsx")
   conn.close()
@@ -159,6 +159,7 @@ def media_materia_prima(grupo,codigo):
 
   df_resultado["mediaMateriaPrima"] = df_resultado[["media_kanban1","media_kanban2","media_kanban3"]].sum(axis=1)
   df_resultado["grupo_concatenado"] = df_resultado["GrupoN1"].astype(str) + df_resultado["CodigoN1"].astype(str)
+  
 
   df_resultado["concatenado"] = df_resultado["Produto"].astype(str) + df_resultado["GrupoN1"].astype(str) + df_resultado["CodigoN1"].astype(str) + df_resultado["GrupoN2"].astype(str) + df_resultado["CodigoN2"].astype(str) + df_resultado["GrupoN3"].astype(str) + df_resultado["CodigoN3"].astype(str) + df_resultado["GrupoN4"].astype(str) + df_resultado["CodigoN4"].astype(str)
 
@@ -167,12 +168,63 @@ def media_materia_prima(grupo,codigo):
   df_resultado = df_resultado.drop_duplicates(subset='concatenado')
   
 
-  # try:
+  lista1 = {
+
+      "grupo":df_resultado["GrupoN1"],
+      "codigo":df_resultado["CodigoN1"],
+      "Descricao":df_resultado["DescricaoN1"],
+      "Qtde":df_resultado["QtdN1"],
+      "mediaMateriaPrima":df_resultado["mediaMateriaPrima"]
+
+  }
+  lista2 = {
+
+      "grupo":df_resultado["GrupoN2"],
+      "codigo":df_resultado["CodigoN2"],
+      "Descricao":df_resultado["DescricaoN2"],
+      "Qtde":df_resultado["QtdN2"],
+      "mediaMateriaPrima":df_resultado["mediaMateriaPrima"]
+
+  }
+  lista3 = {
+
+      "grupo":df_resultado["GrupoN3"],
+      "codigo":df_resultado["CodigoN3"],
+      "Descricao":df_resultado["DescricaoN3"],
+      "Qtde":df_resultado["QtdN3"],
+      "mediaMateriaPrima":df_resultado["mediaMateriaPrima"]
+
+  }
+  lista4 = {
+
+      "grupo":df_resultado["GrupoN4"],
+      "codigo":df_resultado["CodigoN4"],
+      "Descricao":df_resultado["DescricaoN4"],
+      "Qtde":df_resultado["QtdN4"],
+      "mediaMateriaPrima":df_resultado["mediaMateriaPrima"]
+
+  }
+
+  listagem = pd.concat([pd.DataFrame(lista1),pd.DataFrame(lista2),pd.DataFrame(lista3),pd.DataFrame(lista4)],ignore_index=False)
+
+  listagem["codigo_concatenado"] = (listagem["grupo"].apply(lambda x: str(int(x)) if pd.notna(x) else "") +
+  listagem["codigo"].apply(lambda x: str(int(x)) if pd.notna(x) else ""))
+
+  listagem["ID"] = listagem["codigo_concatenado"].astype(str) + listagem["mediaMateriaPrima"].astype(str)
+
+  listagem = listagem[listagem["Descricao"].notna()]
+
+  listagem["soma"] = listagem.groupby("codigo_concatenado")["mediaMateriaPrima"].transform("sum")
+
+  listagem.drop_duplicates(subset="ID")
+
+
+  try:
       
-  #     df_resultado.to_excel('media_kanban\dados.xlsx', index=False)
-  #     print("Arquivo Excel gerado com sucesso!")
-  # except Exception as e:
-  #     print(f"Erro ao executar consulta: {e}")
+      listagem.to_excel('media\dados.xlsx', index=False)
+      print("Arquivo Excel gerado com sucesso!")
+  except Exception as e:
+      print(f"Erro ao executar consulta: {e}")
       
   # # os.startfile("dados.xlsx")
   conn.close()

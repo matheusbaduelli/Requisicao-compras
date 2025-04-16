@@ -124,7 +124,7 @@ def calcular_peso_bruto(grupo,codigo):
     # Remover duplicatas com base na coluna "CódigoConcatenado"
     df.drop_duplicates(subset=["GrupoECódigo"], inplace=True)
     
-    # Salvar novamente no Excel
+    # df.to_excel("peso/resultado12.xlsx",index=False)
     return df
 
     

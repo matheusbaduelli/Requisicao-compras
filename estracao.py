@@ -36,9 +36,9 @@ requis = pd.merge(requisicao1,carteira1[["grupoConcatenado","somaComponente"]],l
 
 requis_material = pd.merge(requis,media_material,left_on="Gr Concatenado",right_on="grupo_concatenado",how="left")
 
-requis_componente_material = pd.merge(requis_material,carteira_peso[["codigo_concatenado","soma_se"]],left_on="Gr Concatenado",right_on="codigo_concatenado",how="left")
+requis_componente_material = pd.merge(requis_material,carteira_peso[["codigo_concatenado","soma_total"]],left_on="Gr Concatenado",right_on="codigo_concatenado",how="left")
 
-requis_componente_material.rename(columns={"somaComponente":"Qtd Pedido","somaMaterial":"Qtd Material carteira","soma_se":"soma_material_carteira"},inplace=True)
+requis_componente_material.rename(columns={"somaComponente":"Qtd Pedido","somaMaterial":"Qtd Material carteira","soma_total":"soma_material_carteira"},inplace=True)
 requis_componente_material.drop_duplicates(subset=["Gr Concatenado"],inplace=True)
 
 requis_componente_material = requis_componente_material.drop(columns=["grupoConcatenado","codigo_concatenado","grupo_concatenado"])

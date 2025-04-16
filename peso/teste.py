@@ -45,7 +45,9 @@ def test(grupo,codigo):
     df["soma_se2"] = df.groupby(["GrupoN3","CódigoN3"])["QtdMultiSomase1"].transform("sum")
     df["soma_se3"] = df.groupby(["GrupoN4","CódigoN4"])["QtdMultiSomase2"].transform("sum")
 
+
     df["soma_se4"] = df[["soma_se1","soma_se2","soma_se3"]].sum(axis=1)
+    
 
     lista1 = {"grupo":df["GrupoN2"],"codigo":df["CódigoN2"],"soma_se":df["soma_se1"]}
     lista2 = {"grupo":df["GrupoN3"],"codigo":df["CódigoN3"],"soma_se":df["soma_se2"]}
@@ -57,7 +59,13 @@ def test(grupo,codigo):
     listagem["codigo"].apply(lambda x: str(int(x)) if pd.notna(x) else ""))
 
     listagem = listagem[listagem["codigo"].notna()]
-    # listagem = listagem[listagem["codigo"].astype(str).str.strip() != ""]
+    
+    listagem["ID"] = listagem["codigo_concatenado"].astype(str) + listagem["soma_se"].astype(str)
+
+    listagem = listagem.drop_duplicates(subset="ID")
+
+    listagem["soma_total"] = listagem.groupby("codigo_concatenado")["soma_se"].transform("sum")
+
 
     listagem.to_excel("peso/resultado.xlsx")
     conn.commit()
