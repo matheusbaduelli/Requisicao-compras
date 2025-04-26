@@ -1,0 +1,1 @@
+listagem = listagem[listagem["codigo"].astype(str).str.strip() != ""]

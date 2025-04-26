@@ -1,0 +1,61 @@
+import pandas as pd
+import sqlite3
+
+estrutura_pd1 = pd.read_excel('Estrutura_Produtos_30_01_2025.xls')
+estrutura_pd2 = pd.read_excel('Estrutura_Produtos_30_01_20252.xls')
+
+media_kanban_df = pd.read_excel('Média Kanban Key.xlsx')
+
+conn = sqlite3.connect('banco.db')
+cursor = conn.cursor()
+estrutura_concatenada = pd.concat([estrutura_pd1, estrutura_pd2])
+
+colunas_peso = ["Pes.Bruto", "Pes.Bruto.1", "Pes.Bruto.2", "Pes.Bruto.3","Qtde","Qtde.1","Qtde.2","Qtde.3"]
+
+for col in colunas_peso:
+    estrutura_concatenada[col] = estrutura_concatenada[col].astype(str).str.replace(",", ".").astype(float)
+
+# Não precisamos iterar sobre o DataFrame para criar outro DataFrame
+# Apenas renomeamos as colunas se necessário
+estrutura_tratada = estrutura_concatenada.rename(columns={
+    "Código do Produto": "CódigodoProduto",
+    "Descrição do produto": "DescriçãodoProduto",
+    "Qtde.3": "Qt3"
+})
+
+# Salvar estrutura_tratada no banco de dados
+estrutura_tratada.to_sql('estrutura_produtos', conn, if_exists='replace', index=False)
+
+# Renomear colunas do media_kanban_df se necessário
+media_kanban_df = media_kanban_df.rename(columns={
+    "Codigo": "CodigodoProd",
+    "Descricao": "DescriçaodoProd",
+    "Média arredondada": "media_kanban"
+})
+
+# Salvar media_kanban no banco de dados
+media_kanban_df.to_sql('media_kanban', conn, if_exists='replace', index=False)
+
+# Se você quiser fazer a junção dos dados e exportar para Excel:
+query = """
+SELECT
+  ep.CódigodoProduto,
+  ep.DescriçãodoProduto,
+  ep.GrupoN1,
+  ep.CódigoN1,
+  ep.Qtd,
+  ep.DescricaoN1,
+  mk.media_kanban
+FROM 
+  estrutura_produtos ep
+INNER JOIN
+  media_kanban mk
+ON
+  ep.CódigodoProduto = mk.CodigodoProd
+"""
+
+df_resultado = pd.read_sql_query(query, conn)
+df_resultado.to_excel('dados.xlsx', index=False)
+
+# Fechar a conexão com o banco de dados
+conn.close()
