@@ -39,6 +39,7 @@ def lista_pecas(dados,grupo,codigo):
                 
         
                 nova_lista.append(lista)
+    
     return nova_lista
 
 

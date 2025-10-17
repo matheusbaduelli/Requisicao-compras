@@ -4,8 +4,8 @@ import math
 def calcular_peso_bruto(grupo,codigo):
 
     # Ler a planilha
-    planilha1 = pd.read_excel('peso\Estrutura_Produtos_02_04_2025.xls',usecols="A:AL")
-    planilha2 = pd.read_excel('peso\Estrutura_Produtos_02_04_20252.xls',usecols="A:AL")
+    planilha1 = pd.read_excel('carteira\Estrutura_Produtos_02_04_2025.xls',usecols="A:AL")
+    planilha2 = pd.read_excel('carteira\Estrutura_Produtos_02_04_20252.xls',usecols="A:AL")
 
     # Concatenar as planilhas
     planilhaConcatenada = pd.concat([planilha1,planilha2],ignore_index=False)

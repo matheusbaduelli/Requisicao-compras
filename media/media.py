@@ -131,8 +131,11 @@ def media_pecas(grupo,codigo):
 
   de_resultado["media_peca"] = de_resultado.groupby([ "GrupoN1", "CodigoN1"])["media_peca"].transform("sum")
 
+  de_resultado['media_peca'] = (de_resultado['media_peca'] / 50).apply(lambda x: int(x) + 1 if x % 1 > 0 else int(x)) * 50
+
 
   conn.close()
+
   return de_resultado
 
 def media_materia_prima(grupo,codigo):

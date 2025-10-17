@@ -61,7 +61,7 @@ def calcular_peso_bruto():
 
     resultado = pd.concat([listagem1, listagem2, listagem3, listagem4],ignore_index=True)
 
-    planilha_pedidos = pd.merge(lista_pedidos[["Pedido", "Qtd","Codigo"]],resultado, left_on="Codigo", right_on="Código do Produto", how="left")
+    planilha_pedidos = pd.merge(lista_pedidos[["Pedido", "Qtd","Codigo Prod"]],resultado, left_on="Codigo Prod", right_on="Código do Produto", how="left")
 
     planilha_pedidos["qtdXQtde"] = planilha_pedidos["Qtd"] * planilha_pedidos["Qtde"]
     planilha_pedidos["pesoXQtde"] = planilha_pedidos["Pes.Bruto"] * planilha_pedidos["Qtd"]

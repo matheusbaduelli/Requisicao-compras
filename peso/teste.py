@@ -10,7 +10,7 @@ def test(grupo,codigo):
 
 
     lista_tecnica = calcular_peso_bruto(grupo,codigo)
-    lista_pedidos = pd.read_excel('peso\Lista de pedidos.xlsx')
+    lista_pedidos = pd.read_excel('carteira\Lista de pedidos.xlsx')
 
 
    
@@ -22,7 +22,7 @@ def test(grupo,codigo):
 
 
 
-    cursor.execute("SELECT lista_de_pedidos.Pedido,lista_tecnica.CódigodoProduto,lista_tecnica.DescriçãodoProduto,lista_tecnica.CódigoN1,lista_tecnica.DescricaoN1,lista_tecnica.Qtd,lista_tecnica.CódigoN2,lista_tecnica.DescricaoN2,lista_tecnica.Qtd1,lista_tecnica.CódigoN3,lista_tecnica.DescricaoN3,lista_tecnica.Qtd2,lista_tecnica.CódigoN4,lista_tecnica.DescricaoN4,lista_tecnica.Qt3,lista_tecnica.Somase,lista_tecnica.Somase1,lista_tecnica.Somase2,lista_de_pedidos.Qtd,lista_tecnica.GrupoN1,lista_tecnica.GrupoN2,lista_tecnica.GrupoN3,lista_tecnica.GrupoN4 FROM lista_de_pedidos INNER JOIN lista_tecnica ON lista_de_pedidos.Codigo = lista_tecnica.CódigodoProduto;")
+    cursor.execute("SELECT lista_de_pedidos.Pedido,lista_tecnica.CódigodoProduto,lista_tecnica.DescriçãodoProduto,lista_tecnica.CódigoN1,lista_tecnica.DescricaoN1,lista_tecnica.Qtd,lista_tecnica.CódigoN2,lista_tecnica.DescricaoN2,lista_tecnica.Qtd1,lista_tecnica.CódigoN3,lista_tecnica.DescricaoN3,lista_tecnica.Qtd2,lista_tecnica.CódigoN4,lista_tecnica.DescricaoN4,lista_tecnica.Qt3,lista_tecnica.Somase,lista_tecnica.Somase1,lista_tecnica.Somase2,lista_de_pedidos.Qtd,lista_tecnica.GrupoN1,lista_tecnica.GrupoN2,lista_tecnica.GrupoN3,lista_tecnica.GrupoN4 FROM lista_de_pedidos INNER JOIN lista_tecnica ON lista_de_pedidos.`Codigo Prod` = lista_tecnica.CódigodoProduto;")
 
 
 
